@@ -6,12 +6,7 @@ import { getStorage } from "firebase/compat/storage";
 // firebase configuration
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyB1fzZa-BCgDbZ_2ErcHTiVkKQ6bTD66Qk",
-  authDomain: "mayacl-54f4c.firebaseapp.com",
-  projectId: "mayacl-54f4c",
-  storageBucket: "mayacl-54f4c.appspot.com",
-  messagingSenderId: "53613889333",
-  appId: "1:53613889333:web:77fb34e369748b7414ae7c",
+ 
   };
 
 let app;
