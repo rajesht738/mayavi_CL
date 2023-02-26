@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "maya",
+    "name": "Maya",
     "slug": "maya",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,13 +21,20 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.maya.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7c1cdc27-8155-43b3-b8f5-a40da90dfec3"
+      }
     }
   }
 }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "53613889333",
+    "project_id": "mayacl-54f4c",
+    "storage_bucket": "mayacl-54f4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53613889333:android:90a3f94498a1a83b14ae7c",
+        "android_client_info": {
+          "package_name": "com.maya.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53613889333-67of74819r01npeph5e0sei5a191vi53.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maya.myapp",
+            "certificate_hash": "395007546becdd88fd3ff322c728cf29dff633e1"
+          }
+        },
+        {
+          "client_id": "53613889333-bd5vuro4midv02pshggftb0hrc96e84s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6B5B4wCrmAHwWTupLjjBVy_7mm4lKqbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53613889333-bd5vuro4midv02pshggftb0hrc96e84s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
