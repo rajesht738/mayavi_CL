@@ -28,7 +28,7 @@ const ParkingAlt = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `key=AAAADHujBzU:APA91bHdCim1uuILKMwkiaaR1IvTzLfTFPaojDULTfqvte_UfnH6aKYuUNZ7uQ5iOMfDjDYALz60p_EwpOKmsQXhLdFMH5bZ3b7EJ4eGMegpz_QbZup04nAhr10jp9xS71C30CzlL4oj`,
+        Authorization: `key=`,
       },
       body: JSON.stringify({
         to: token,
