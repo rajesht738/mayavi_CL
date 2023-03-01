@@ -5,12 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { db, auth } from "../../config";
-
+import messaging from "@react-native-firebase/messaging";
 import IonicIcon from "react-native-vector-icons/Ionicons";
 
 const windowWidth = Dimensions.get("window").width;
@@ -19,7 +19,95 @@ const ParkingAlt = () => {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
+  const [userToken, setUsertoken] = useState("");
+  const [mobile, setMobile] = useState('');
+  // send Alert
+  const sendPush = async (token) => {
+    // alert(token);
+    await fetch("https://fcm.googleapis.com/fcm/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `key=AAAADHujBzU:APA91bHdCim1uuILKMwkiaaR1IvTzLfTFPaojDULTfqvte_UfnH6aKYuUNZ7uQ5iOMfDjDYALz60p_EwpOKmsQXhLdFMH5bZ3b7EJ4eGMegpz_QbZup04nAhr10jp9xS71C30CzlL4oj`,
+      },
+      body: JSON.stringify({
+        to: token,
+        priority: "high",
+        data: {
+              title: "Parking Alert Message!",
+              body: "Please Adjust Your Vehicle",
+              mobile: mobile
+            },
+      }),
+    }).then((res) => {
+      if (res.status == 200) {
+        alert("Alert Message Sent!");
+      }
+    });
 
+    // Notification details.
+    // const payload = {
+    //   notification: {
+    //     title: "Payment completed!",
+    //     body: `Thank you, we received your payment.`,
+    //   },
+    // };
+
+    // // Send notifications to all tokens.
+    // messaging().sendToDevice(uid, payload)
+    //   .then((response)=> {
+    //     console.log("Successfully sent push: ", response);
+    //     return response;
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error sending push:", error);
+    //   });
+
+    // return results;
+    // // Get the user from Firestore
+    // const getDeviceTokensPromise = db.collection("users").doc(uid).get();
+    // // console.log(getDeviceTokensPromise)
+    // // Get the User profile from Firebase Auth
+    // const getUserProfilePromise = auth.getUser(uid);
+
+    // Promise.all([getDeviceTokensPromise, getUserProfilePromise])
+    //   .then(function (results) {
+    //     // The array containing all the user's tokens.
+    //     const tokens = Object.keys(results[0].data().uid);
+    //     console.log(tokens);
+    //     // The user profile from Firebase Auth
+    //     const user = results[1];
+
+    //     // Check if there are any device tokens.
+    //     if (tokens.length === 0) {
+    //       return console.log("There are no notification tokens to send to.");
+    //     }
+
+    //     // Notification details.
+    //     const payload = {
+    //       notification: {
+    //         title: "Payment completed!",
+    //         body: `Thank you, ${user.displayName}, we received your payment.`,
+    //       },
+    //     };
+
+    //     // Send notifications to all tokens.
+    //     messaging()
+    //       .sendToDevice(tokens, payload)
+    //       .then(function (response) {
+    //         console.log("Successfully sent push: ", response);
+    //         return response;
+    //       })
+    //       .catch(function (error) {
+    //         console.log("Error sending push:", error);
+    //       });
+
+    //     return results;
+    //   })
+    //   .catch(function (error) {
+    //     console.log("Error retrieving tokens or user details:", error);
+    //   });
+  };
   //let timeOutId;
   // const debounce = (func, delay) => {
   //   return (...args) => {
@@ -29,41 +117,44 @@ const ParkingAlt = () => {
   //     }, delay);
   //   };
   // };
- 
+
   const handleChange = ({ nativeEvent }) => {
     const { text } = nativeEvent;
     setQuery(text);
     debounceSearch(text);
   };
   const handleSearch = (value) => {
-    // console.log(value);
-    const res = db
-      .collection("users")
+    db.collection("users")
       .where("vehicle_number", "==", value)
       .get()
-      .then((resp) => {
-        if (resp.size > 0) {
+      .then((snapshot) => {
+        if (snapshot.size > 0) {
           setStatus(true);
           setQuery(value);
+          snapshot.forEach((doc) => {
+            setUsertoken(doc.data().token);
+            console.log(doc.data().token);
+          });
         } else {
           setStatus(false);
         }
       });
   };
-  const debounceSearch = debounce(handleSearch, 1000);
+
+  const debounceSearch = debounce(handleSearch, 500);
+
   useEffect(() => {
     db.collection("users")
-    .doc(auth.currentUser.uid)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.exists) {
-        setCurrentUser(snapshot.data());
-      } else {
-        console.log("user not found");
-      }
-    });
-
-   
+      .doc(auth.currentUser.uid)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists) {
+          setCurrentUser(snapshot.data());
+          setMobile(snapshot.data().mobile);
+        } else {
+          console.log("user not found");
+        }
+      });
   }, []);
   return (
     <View style={styles.container}>
@@ -97,7 +188,7 @@ const ParkingAlt = () => {
       </View>
       <View>
         <TextInput
-          name="vehicle_number"
+          name="request_name"
           style={[styles.textInput]}
           placeholder="Enter Name"
           value={`${currentUser.firstName}`}
@@ -109,7 +200,10 @@ const ParkingAlt = () => {
           value={currentUser.mobile}
         />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => sendPush(userToken)}
+        style={styles.button}
+      >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Send Alert</Text>
       </TouchableOpacity>
     </View>

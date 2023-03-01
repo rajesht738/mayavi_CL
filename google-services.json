@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "53613889333-07v054n6n1crhg0ngkkqd5nsgoumrbj6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maya.myapp",
+            "certificate_hash": "ec8d2b2c601e985527c2e745e7f3984a908c9d4f"
+          }
+        },
+        {
           "client_id": "53613889333-67of74819r01npeph5e0sei5a191vi53.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

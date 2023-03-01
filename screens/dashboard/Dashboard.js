@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "../../config";
+import { auth, db, fs } from "../../config";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Ionic from "react-native-vector-icons/Ionicons"
@@ -21,6 +21,7 @@ const Dashboard = () => {
       .then((snapshot) => {
         if (snapshot.exists) {
           setName(snapshot.data());
+        //  console.log('Auth user',snapshot.data());
         } else {
           console.log("User does not exist");
         }

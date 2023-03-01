@@ -6,8 +6,18 @@ import { Formik, Field } from "formik";
 
 import CustomInput from "../../utility/CustomInput";
 import { registerValidationSchema } from "./Validations";
-
+import messaging from "@react-native-firebase/messaging";
 const Registration = () => {
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
   const registerUser = async (vehicle_number,firstName, lastName, email, mobile, password) => {
     await auth
       .createUserWithEmailAndPassword(email, password)
@@ -24,14 +34,23 @@ const Registration = () => {
         alert(error.message);
       })
       .then(() => {
+        if (requestUserPermission()) {
+       
+        messaging()
+        .getToken()
+        .then((token) => {
+            
         db.collection("users").doc(auth.currentUser.uid).set({
+          token,
           vehicle_number,
           firstName,
           lastName,
           email,
           mobile,
+          
         });
-      })
+      });
+   } })
       .catch((error) => {
         alert(error.message);
       })

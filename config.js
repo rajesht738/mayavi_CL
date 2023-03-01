@@ -8,7 +8,7 @@ import { getStorage } from "firebase/compat/storage";
 export const firebaseConfig = {
  
   };
-
+//  firebase.firestore().settings({ experimentalForceLongPolling: true });
 let app;
 
 if (firebase.apps.length === 0) {
@@ -16,11 +16,13 @@ if (firebase.apps.length === 0) {
 } else {
   app = firebase.initializeApp(firebaseConfig);
 }
-
-const db = app.firestore();
+app.firestore().settings({ experimentalForceLongPolling: true ,merge: true});  
+          
+const db= app.firestore();
+// const db = app.firestore();
 const auth = firebase.auth();
 const storage = app.storage();
 
-const fb = firebase.app()
+const fs = firebase.firestore()
 // console.log(auth);
-export { firebase, db, auth, storage,fb};
+export { firebase, db, auth, storage,fs};
